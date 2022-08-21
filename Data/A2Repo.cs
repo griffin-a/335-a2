@@ -20,4 +20,9 @@ public class A2Repo : IA2Repo
         return true;
 
     }
+
+    public bool ValidLogin(string username, string password)
+    {
+        throw new NotImplementedException();
+    }
 }
