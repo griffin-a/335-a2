@@ -1,3 +1,4 @@
+using A2.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace A2.Controllers;
@@ -7,7 +8,7 @@ namespace A2.Controllers;
 public class A2Controller : Controller
 {
     [HttpPost]
-    public ActionResult<string> RegisterUser()
+    public ActionResult<string> RegisterUser(User user)
     {
         return null;
     }
