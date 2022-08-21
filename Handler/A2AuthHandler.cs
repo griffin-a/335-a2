@@ -11,7 +11,8 @@ namespace A2.Handler;
 public class A2AuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 {
     private readonly IA2Repo _repository;
-    public A2AuthHandler( 
+
+    public A2AuthHandler(
         IA2Repo repository,
         IOptionsMonitor<AuthenticationSchemeOptions> options,
         ILoggerFactory logger,
@@ -21,23 +22,22 @@ public class A2AuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
         _repository = repository;
     }
 
-    protected override Task<AuthenticateResult> HandleAuthenticateAsync()
+    protected override async Task<AuthenticateResult> HandleAuthenticateAsync()
     {
         if (!Request.Headers.ContainsKey("Authorization"))
         {
             Response.Headers.Add("WWW-Authenticate", "Basic");
-            return Task.FromResult(AuthenticateResult.Fail("Authorization header not found."));
+            return AuthenticateResult.Fail("Authorization header not found.");
         }
 
         var authHeader = AuthenticationHeaderValue.Parse(Request.Headers["Authorization"]);
-        if (authHeader.Parameter == null) return Task.FromResult(AuthenticateResult.Fail("userName and password do not match"));
         var credentialBytes = Convert.FromBase64String(authHeader.Parameter);
         var credentials = Encoding.UTF8.GetString(credentialBytes).Split(":");
         var username = credentials[0];
         var password = credentials[1];
 
         if (!_repository.ValidLogin(username, password))
-            return Task.FromResult(AuthenticateResult.Fail("userName and password do not match"));
+            return AuthenticateResult.Fail("userName and password do not match");
         var claims = new[] { new Claim("userName", username) };
 
         ClaimsIdentity identity = new ClaimsIdentity(claims, "Basic");
@@ -45,6 +45,7 @@ public class A2AuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
 
         AuthenticationTicket ticket = new AuthenticationTicket(principal, Scheme.Name);
 
-        return Task.FromResult(AuthenticateResult.Success(ticket));
+        return AuthenticateResult.Success(ticket);
+
     }
 }
