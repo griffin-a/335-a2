@@ -29,6 +29,8 @@ public class A2Controller : Controller
     public ActionResult<string> GetVersion() => Ok("1.0.0 (auth)");
 
     [HttpPost("PurchaseItem/{itemId}")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<Order> PurchaseItem(int itemId)
     {
         return null;
