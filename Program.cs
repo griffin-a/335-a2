@@ -1,6 +1,7 @@
 
 
 using A2.data;
+using A2.Data;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -9,6 +10,9 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<A2DBContext>(
     options => options.UseSqlite(builder.Configuration["A2DbConnection"])
 );
+
+builder.Services.AddScoped<IA2Repo, A2Repo>();
+
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
