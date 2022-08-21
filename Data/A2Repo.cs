@@ -23,6 +23,6 @@ public class A2Repo : IA2Repo
 
     public bool ValidLogin(string username, string password)
     {
-        throw new NotImplementedException();
+        return _dbContext.Users.FirstOrDefault(u => u.UserName == username && u.Password == password) != null;
     }
 }

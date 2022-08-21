@@ -1,6 +1,7 @@
 using A2.Data;
 using A2.Dtos;
 using A2.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace A2.Controllers;
