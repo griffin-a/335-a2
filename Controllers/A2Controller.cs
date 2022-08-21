@@ -18,7 +18,6 @@ public class A2Controller : Controller
     [HttpPost("Register")]
     public ActionResult<string> RegisterUser(User user)
     {
-        _repository.AddUser(user);
-        return null;
+        return Ok(_repository.AddUser(user) ? "User successfully registered." : "Username not available.");
     }
 }

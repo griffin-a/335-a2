@@ -1,6 +1,7 @@
 using A2.data;
 using A2.Data;
 using A2.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 public class A2Repo : IA2Repo
@@ -11,12 +12,12 @@ public class A2Repo : IA2Repo
         _dbContext = dbContext;
     }
     
-    public User AddUser(User newUser)
+    public bool AddUser(User newUser)
     {
-        EntityEntry<User> e = _dbContext.Users.Add(newUser);
-        User u = e.Entity;
-        _dbContext.SaveChanges();
+        if (_dbContext.Users.SingleOrDefault(u => u.UserName == newUser.UserName) == null) return false;
         _dbContext.Users.Add(newUser);
-        return u;
+        _dbContext.SaveChanges();
+        return true;
+
     }
 }

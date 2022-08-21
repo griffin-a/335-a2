@@ -4,5 +4,5 @@ namespace A2.Data;
 
 public interface IA2Repo
 {
-    User AddUser(User user);
+    bool AddUser(User user);
 }
