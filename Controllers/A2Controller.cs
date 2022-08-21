@@ -24,6 +24,8 @@ public class A2Controller : Controller
     }
 
     [HttpGet("GetVersionA")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<string> GetVersion() => Ok("1.0.0 (auth)");
 
     [HttpPost("PurchaseItem/{itemId}")]

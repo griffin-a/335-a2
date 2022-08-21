@@ -14,11 +14,10 @@ public class A2Repo : IA2Repo
     
     public bool AddUser(User newUser)
     {
-        if (_dbContext.Users.SingleOrDefault(u => u.UserName == newUser.UserName) == null) return false;
+        if (_dbContext.Users.SingleOrDefault(u => u.UserName == newUser.UserName) != null) return false;
         _dbContext.Users.Add(newUser);
         _dbContext.SaveChanges();
         return true;
-
     }
 
     public bool ValidLogin(string username, string password)
