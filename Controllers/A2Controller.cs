@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using A2.Data;
 using A2.Dtos;
 using A2.Models;
@@ -33,7 +34,18 @@ public class A2Controller : Controller
     [Authorize(Policy = "UserOnly")]
     public ActionResult<Order> PurchaseItem(int itemId)
     {
-        return null;
+        ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
+        Claim c = ci.FindFirst("userName")!;
+        string username = c.Value;
+        var user = _repository.GetUserByUsername(username);
+        
+        Order order = new Order
+        {
+            ProductId = itemId,
+            UserName = user.UserName
+        };
+        
+        return Ok(order);
     }
 
     [HttpPost("PairMe")]

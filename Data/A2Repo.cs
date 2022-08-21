@@ -7,11 +7,12 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 public class A2Repo : IA2Repo
 {
     private readonly A2DBContext _dbContext;
+
     public A2Repo(A2DBContext dbContext)
     {
         _dbContext = dbContext;
     }
-    
+
     public bool AddUser(User newUser)
     {
         if (_dbContext.Users.SingleOrDefault(u => u.UserName == newUser.UserName) != null) return false;
@@ -24,4 +25,6 @@ public class A2Repo : IA2Repo
     {
         return _dbContext.Users.FirstOrDefault(u => u.UserName == username && u.Password == password) != null;
     }
+
+    public User GetUserByUsername(string username) => _dbContext.Users.FirstOrDefault(u => u.UserName == username)!;
 }
