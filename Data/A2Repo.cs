@@ -1,8 +1,9 @@
-using A2.data;
 using A2.Data;
 using A2.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.ChangeTracking;
+
+namespace A2.Data;
 
 public class A2Repo : IA2Repo
 {
@@ -38,4 +39,6 @@ public class A2Repo : IA2Repo
         _dbContext.GameRecords.Add(gameRecord);
         return g;
     }
+
+    public GameRecord GetGameRecordById(Guid id) => _dbContext.GameRecords.FirstOrDefault(g => g.GameId == id)!;
 }

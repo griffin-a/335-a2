@@ -1,7 +1,7 @@
 using A2.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace A2.data;
+namespace A2.Data;
 
 public class A2DBContext : DbContext
 {

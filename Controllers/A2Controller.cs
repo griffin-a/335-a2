@@ -88,8 +88,11 @@ public class A2Controller : Controller
     }
 
     [HttpGet("TheirMove/{gameId}")]
-    public ActionResult<GameMove> GetOpponentMove(int gameId)
+    public ActionResult<GameRecord> GetOpponentMove(Guid gameId)
     {
+        // Check if a game exists based on the given id first
+        var game = _repository.GetGameRecordById(gameId);
+
         return null;
     }
 
