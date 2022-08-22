@@ -107,12 +107,16 @@ public class A2Controller : Controller
     }
 
     [HttpPost("MyMove")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<string> MakeMove(GameMove move)
     {
         return null;
     }
 
     [HttpPost("QuitGame/{gameId}")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<string> QuitGame(int gameId)
     {
         return null;
