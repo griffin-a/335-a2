@@ -111,7 +111,20 @@ public class A2Controller : Controller
     [Authorize(Policy = "UserOnly")]
     public ActionResult<string> MakeMove(GameMove move)
     {
-        return null;
+        // Check if a game exists based on the given id first
+        var game = _repository.GetGameRecordById(move.GameId);
+        string res = "no such gameId";
+
+        if (game == null) return Ok(res);
+        if (game.State == "wait") res = "You do not have an opponent yet.";
+        else if (game.LastMovePlayer1 != null) res = "It is not your turn.";
+        else 
+        {
+            res = "move registered.";
+        }
+
+
+        return Ok(res);
     }
 
     [HttpPost("QuitGame/{gameId}")]
