@@ -88,6 +88,8 @@ public class A2Controller : Controller
     }
 
     [HttpGet("TheirMove/{gameId}")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<string> GetOpponentMove(Guid gameId)
     {
         // Check if a game exists based on the given id first
