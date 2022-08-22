@@ -34,10 +34,10 @@ public class A2Controller : Controller
     [Authorize(Policy = "UserOnly")]
     public ActionResult<Order> PurchaseItem(int itemId)
     {
-        ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
-        Claim c = ci.FindFirst("userName")!;
-        string username = c.Value;
-        var user = _repository.GetUserByUsername(username);
+        // ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
+        // Claim c = ci.FindFirst("userName")!;
+        // string username = c.Value;
+        var user = _repository.GetUserByUsername(GetCurrentUsername());
         
         Order order = new Order
         {
@@ -54,9 +54,9 @@ public class A2Controller : Controller
     public ActionResult<GameRecordOut> StartGame()
     {
         // Get the current user that is logged in
-        ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
-        Claim c = ci.FindFirst("userName")!;
-        string username = c.Value;
+        // ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
+        // Claim c = ci.FindFirst("userName")!;
+        string username = GetCurrentUsername();
         // var user = _repository.GetUserByUsername(username);
         
         // Check that there isn't a user waiting to play a game (no game in state "wait")
@@ -88,12 +88,20 @@ public class A2Controller : Controller
     }
 
     [HttpGet("TheirMove/{gameId}")]
-    public ActionResult<GameRecord> GetOpponentMove(Guid gameId)
+    public ActionResult<string> GetOpponentMove(Guid gameId)
     {
         // Check if a game exists based on the given id first
         var game = _repository.GetGameRecordById(gameId);
+        string res = "no such gameId";
 
-        return null;
+        if (game == null) return Ok(res);
+        // Check if the game is a game that is played by the user (Player 1 matches the current user)
+        string username = GetCurrentUsername();
+        if (game.Player1 != username) res = "not your game id";
+        else if (game.Player2 == null) res = "You do not have an opponent yet.";
+        else if (game.LastMovePlayer2 == null) res = "Your opponent has not moved yet.";
+
+        return Ok(res);
     }
 
     [HttpPost("MyMove")]
@@ -106,5 +114,12 @@ public class A2Controller : Controller
     public ActionResult<string> QuitGame(int gameId)
     {
         return null;
+    }
+
+    private string GetCurrentUsername()
+    {
+        ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
+        Claim c = ci.FindFirst("userName")!;
+        return c.Value;
     }
 }
