@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "D:\\griffin\\Documents\\335-a2\\A2.csproj": {}
+    "/Users/griffin/Documents/A2-template/A2.csproj": {}
   },
   "projects": {
-    "D:\\griffin\\Documents\\335-a2\\A2.csproj": {
+    "/Users/griffin/Documents/A2-template/A2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\griffin\\Documents\\335-a2\\A2.csproj",
+        "projectUniqueName": "/Users/griffin/Documents/A2-template/A2.csproj",
         "projectName": "A2",
-        "projectPath": "D:\\griffin\\Documents\\335-a2\\A2.csproj",
-        "packagesPath": "C:\\Users\\griffin\\.nuget\\packages\\",
-        "outputPath": "D:\\griffin\\Documents\\335-a2\\obj\\",
+        "projectPath": "/Users/griffin/Documents/A2-template/A2.csproj",
+        "packagesPath": "/Users/griffin/.nuget/packages/",
+        "outputPath": "/Users/griffin/Documents/A2-template/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\griffin\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/griffin/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net6.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -74,7 +72,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/6.0.400/RuntimeIdentifierGraph.json"
         }
       }
     }

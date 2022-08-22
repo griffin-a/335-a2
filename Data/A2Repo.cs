@@ -27,4 +27,15 @@ public class A2Repo : IA2Repo
     }
 
     public User GetUserByUsername(string username) => _dbContext.Users.FirstOrDefault(u => u.UserName == username)!;
+
+    public IEnumerable<GameRecord> GetGameRecords() => _dbContext.GameRecords.ToList();
+
+    public GameRecord AddGameRecord(GameRecord gameRecord)
+    {
+        EntityEntry<GameRecord> e = _dbContext.GameRecords.Add(gameRecord);
+        GameRecord g = e.Entity;
+        _dbContext.SaveChanges();
+        _dbContext.GameRecords.Add(gameRecord);
+        return g;
+    }
 }

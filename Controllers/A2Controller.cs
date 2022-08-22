@@ -49,9 +49,42 @@ public class A2Controller : Controller
     }
 
     [HttpPost("PairMe")]
+    [Authorize(AuthenticationSchemes = "MyAuthentication")]
+    [Authorize(Policy = "UserOnly")]
     public ActionResult<GameRecordOut> StartGame()
     {
-        return null;
+        // Get the current user that is logged in
+        ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
+        Claim c = ci.FindFirst("userName")!;
+        string username = c.Value;
+        // var user = _repository.GetUserByUsername(username);
+        
+        // Check that there isn't a user waiting to play a game (no game in state "wait")
+        var games = _repository.GetGameRecords();
+        var queuedGame = games.FirstOrDefault(g => g.State == "wait");
+
+        GameRecord gameRecord;
+        
+        if (queuedGame == null)
+        { 
+            gameRecord = new GameRecord { GameId = Guid.NewGuid(), State = "wait", Player1 = username };
+        }
+        else
+        {
+            gameRecord = new GameRecord { GameId = Guid.NewGuid(), State = "progress", Player2 = username };
+
+        }
+
+        _repository.AddGameRecord(gameRecord);
+
+        GameRecordOut gameRecordOut = new GameRecordOut
+        {
+            GameId = gameRecord.GameId, State = gameRecord.State, Player1 = gameRecord.Player1,
+            Player2 = gameRecord.Player2, LastMovePlayer1 = gameRecord.LastMovePlayer1,
+            LastMovePlayer2 = gameRecord.LastMovePlayer2
+        };
+        
+        return Ok(gameRecordOut);
     }
 
     [HttpGet("TheirMove/{gameId}")]
