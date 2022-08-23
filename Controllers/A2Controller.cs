@@ -150,7 +150,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer1 == null)
                 {
                     game.LastMovePlayer2 = null;
-                    _repository.AddGameRecord(game);
+                    _repository.UpdateGameRecord(game);
                     res = "move registered";
                 }
                 else res = "It is not your turn.";
@@ -166,7 +166,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer2 == null)
                 {
                     game.LastMovePlayer1 = null;
-                    _repository.AddGameRecord(game);
+                    _repository.UpdateGameRecord(game);
                     res = "move registered";
                 }
                 else res = "It is not your turn.";
