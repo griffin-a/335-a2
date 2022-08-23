@@ -169,9 +169,32 @@ public class A2Controller : Controller
     [HttpPost("QuitGame/{gameId}")]
     [Authorize(AuthenticationSchemes = "MyAuthentication")]
     [Authorize(Policy = "UserOnly")]
-    public ActionResult<string> QuitGame(int gameId)
+    public ActionResult<string> QuitGame(Guid gameId)
     {
-        return null;
+        // Get the game based on the passed in gameId
+        var game = _repository.GetGameRecordById(gameId);
+        var username = GetCurrentUsername();
+        var res = "no such gameId";
+
+        // Get username of currently logged in user
+        if (game != null)
+        {
+            if (username == game.Player1 || username == game.Player2)
+            {
+                // Delete the game record from the db 
+                res = "game over";
+            }
+            else
+            {
+                res = "You have not started a game.";
+            }
+
+            return Ok(res);
+        }
+
+        // Check if the user is assigned to a game 
+        // Check if the game is assigned to the user
+        return Ok(res);
     }
 
     
