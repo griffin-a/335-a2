@@ -97,6 +97,10 @@ public class A2Controller : Controller
                 Player2 = queuedGame.Player2, LastMovePlayer1 = queuedGame.LastMovePlayer1,
                 LastMovePlayer2 = queuedGame.LastMovePlayer2
             };
+
+            _repository.UpdateGameRecord(queuedGame);
+
+            // _repository.AddGameRecord(queuedGame);
         }
 
         return Ok(gameRecordOut);

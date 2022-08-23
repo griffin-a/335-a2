@@ -48,4 +48,11 @@ public class A2Repo : IA2Repo
         _dbContext.SaveChanges();
         return g;
     }
+
+    public GameRecord UpdateGameRecord(GameRecord g)
+    {
+        _dbContext.GameRecords.Update(g);
+        _dbContext.SaveChanges();
+        return g;
+    }
 }
