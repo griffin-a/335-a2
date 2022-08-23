@@ -116,51 +116,47 @@ public class A2Controller : Controller
         var res = "no such gameId";
         var username = GetCurrentUsername();
 
-        if (game != null)
+        if (game == null) return Ok(res);
+        // Check that the game specified in the move corresponds to a game the user is assigned to
+        var assignedPlayer1 = game.Player1;
+        var assignedPlayer2 = game.Player2;
+
+        // Case where user is player 1
+        if (assignedPlayer1 == username)
         {
-            // Check that the game specified in the move corresponds to a game the user is assigned to
-            var assignedPlayer1 = game.Player1;
-            var assignedPlayer2 = game.Player2;
-
-            // Case where user is player 1
-            if (assignedPlayer1 == username)
+            // Check that the game's status is "progress"
+            // Also check that the user's last move is null
+            if (game.State == "progress")
             {
-                // Check that the game's status is "progress"
-                // Also check that the user's last move is null
-                if (game.State == "progress")
+                if (game.LastMovePlayer1 == null)
                 {
-                    if (game.LastMovePlayer1 == null)
-                    {
-                        game.LastMovePlayer2 = null;
-                        _repository.AddGameRecord(game);
-                        res = "move registered";
-                    }
-                    else res = "It is not your turn.";
+                    game.LastMovePlayer2 = null;
+                    _repository.AddGameRecord(game);
+                    res = "move registered";
                 }
-                else res = "You do not have an opponent yet.";
+                else res = "It is not your turn.";
             }
-            // Case where user is player 2
-            else if (assignedPlayer2 == username)
+            else res = "You do not have an opponent yet.";
+        }
+        // Case where user is player 2
+        else if (assignedPlayer2 == username)
+        {
+            // Check that the game's status is "progress"
+            if (game.State == "progress")
             {
-                // Check that the game's status is "progress"
-                if (game.State == "progress")
+                if (game.LastMovePlayer2 == null)
                 {
-                    if (game.LastMovePlayer2 == null)
-                    {
-                        game.LastMovePlayer1 = null;
-                        _repository.AddGameRecord(game);
-                        res = "move registered";
-                    }
-                    else res = "It is not your turn.";
+                    game.LastMovePlayer1 = null;
+                    _repository.AddGameRecord(game);
+                    res = "move registered";
                 }
-                else res = "You do not have an opponent yet.";
+                else res = "It is not your turn.";
             }
-            else
-            {
-                res = "not your game id";
-            }
-
-            return Ok(res);
+            else res = "You do not have an opponent yet.";
+        }
+        else
+        {
+            res = "not your game id";
         }
 
         return Ok(res);
@@ -177,25 +173,22 @@ public class A2Controller : Controller
         var res = "no such gameId";
 
         // Get username of currently logged in user
-        if (game != null)
+        if (game == null) return Ok(res);
+        if (username == game.Player1 || username == game.Player2)
         {
-            if (username == game.Player1 || username == game.Player2)
-            {
-                // Delete the game record from the db 
-                _repository.RemoveGameRecord(game);
-                res = "game over";
-            }
-            else
-            {
-                res = "You have not started a game.";
-            }
-
-            return Ok(res);
+            // Delete the game record from the db 
+            _repository.RemoveGameRecord(game);
+            res = "game over";
         }
+        else
+        {
+            res = "You have not started a game.";
+        }
+
+        return Ok(res);
 
         // Check if the user is assigned to a game 
         // Check if the game is assigned to the user
-        return Ok(res);
     }
 
     
