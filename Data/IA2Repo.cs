@@ -11,4 +11,5 @@ public interface IA2Repo
     IEnumerable<GameRecord> GetGameRecords();
     GameRecord AddGameRecord(GameRecord gameRecord);
     GameRecord GetGameRecordById(Guid id);
+    GameRecord RemoveGameRecord(GameRecord g);
 }

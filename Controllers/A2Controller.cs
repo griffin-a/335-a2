@@ -182,6 +182,7 @@ public class A2Controller : Controller
             if (username == game.Player1 || username == game.Player2)
             {
                 // Delete the game record from the db 
+                _repository.RemoveGameRecord(game);
                 res = "game over";
             }
             else

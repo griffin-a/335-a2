@@ -41,4 +41,11 @@ public class A2Repo : IA2Repo
     }
 
     public GameRecord GetGameRecordById(Guid id) => _dbContext.GameRecords.FirstOrDefault(g => g.GameId == id)!;
+    public GameRecord RemoveGameRecord(GameRecord g)
+    {
+        // GameRecord g = _dbContext.GameRecords.FirstOrDefault(g => g.GameId == id)!;
+        _dbContext.Remove(g);
+        _dbContext.SaveChanges();
+        return g;
+    }
 }
