@@ -129,7 +129,12 @@ public class A2Controller : Controller
                 // Also check that the user's last move is null
                 if (game.State == "progress")
                 {
-                    if (game.LastMovePlayer1 == null) res = "move registered";
+                    if (game.LastMovePlayer1 == null)
+                    {
+                        game.LastMovePlayer2 = null;
+                        _repository.AddGameRecord(game);
+                        res = "move registered";
+                    }
                     else res = "It is not your turn.";
                 }
                 else res = "You do not have an opponent yet.";
@@ -140,7 +145,12 @@ public class A2Controller : Controller
                 // Check that the game's status is "progress"
                 if (game.State == "progress")
                 {
-                    if (game.LastMovePlayer2 == null) res = "move registered";
+                    if (game.LastMovePlayer2 == null)
+                    {
+                        game.LastMovePlayer1 = null;
+                        _repository.AddGameRecord(game);
+                        res = "move registered";
+                    }
                     else res = "It is not your turn.";
                 }
                 else res = "You do not have an opponent yet.";
