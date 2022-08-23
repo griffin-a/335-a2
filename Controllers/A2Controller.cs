@@ -114,14 +114,32 @@ public class A2Controller : Controller
         // Check if a game exists based on the given id first
         var game = _repository.GetGameRecordById(move.GameId);
         string res = "no such gameId";
+        string username = GetCurrentUsername();
 
         if (game == null) return Ok(res);
-        if (game.State == "wait") res = "You do not have an opponent yet.";
-        else if (game.LastMovePlayer1 != null) res = "It is not your turn.";
-        else 
+        // Check that the user is registered for the particular game id that has been passed in.
+        if (game.Player1 != username && game.Player2 != username) return Ok(res);
+        if (game.State != "progress") return Ok(res);
+        // Determine whether or not the user is Player 1 or Player 2
+        if (game.LastMovePlayer1 == username)
         {
-            res = "move registered.";
+            game.LastMovePlayer2 = null;
+            res = "move registered";
         }
+                
+        else if (game.LastMovePlayer2 == username)
+        {
+            game.LastMovePlayer1 = null;
+            res = "move registered";
+        }
+
+
+        // if (game.State == "wait") res = "You do not have an opponent yet.";
+        // else if (game.LastMovePlayer1 != null) res = "It is not your turn.";
+        // else 
+        // {
+        //     res = "move registered.";
+        // }
 
 
         return Ok(res);
