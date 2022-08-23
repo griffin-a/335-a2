@@ -113,34 +113,45 @@ public class A2Controller : Controller
     {
         // Check if a game exists based on the given id first
         var game = _repository.GetGameRecordById(move.GameId);
-        string res = "no such gameId";
-        string username = GetCurrentUsername();
+        var res = "no such gameId";
+        var username = GetCurrentUsername();
 
-        if (game == null) return Ok(res);
-        // Check that the user is registered for the particular game id that has been passed in.
-        if (game.Player1 != username && game.Player2 != username) return Ok(res);
-        if (game.State != "progress") return Ok(res);
-        // Determine whether or not the user is Player 1 or Player 2
-        if (game.LastMovePlayer1 == username)
+        if (game != null)
         {
-            game.LastMovePlayer2 = null;
-            res = "move registered";
+            // Check that the game specified in the move corresponds to a game the user is assigned to
+            var assignedPlayer1 = game.Player1;
+            var assignedPlayer2 = game.Player2;
+
+            // Case where user is player 1
+            if (assignedPlayer1 == username)
+            {
+                // Check that the game's status is "progress"
+                // Also check that the user's last move is null
+                if (game.State == "progress")
+                {
+                    if (game.LastMovePlayer1 == null) res = "move registered";
+                    else res = "It is not your turn.";
+                }
+                else res = "You do not have an opponent yet.";
+            }
+            // Case where user is player 2
+            else if (assignedPlayer2 == username)
+            {
+                // Check that the game's status is "progress"
+                if (game.State == "progress")
+                {
+                    if (game.LastMovePlayer2 == null) res = "move registered";
+                    else res = "It is not your turn.";
+                }
+                else res = "You do not have an opponent yet.";
+            }
+            else
+            {
+                res = "not your game id";
+            }
+
+            return Ok(res);
         }
-                
-        else if (game.LastMovePlayer2 == username)
-        {
-            game.LastMovePlayer1 = null;
-            res = "move registered";
-        }
-
-
-        // if (game.State == "wait") res = "You do not have an opponent yet.";
-        // else if (game.LastMovePlayer1 != null) res = "It is not your turn.";
-        // else 
-        // {
-        //     res = "move registered.";
-        // }
-
 
         return Ok(res);
     }
@@ -153,6 +164,7 @@ public class A2Controller : Controller
         return null;
     }
 
+    
     private string GetCurrentUsername()
     {
         ClaimsIdentity ci = HttpContext.User.Identities.FirstOrDefault()!;
