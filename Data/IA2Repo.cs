@@ -12,5 +12,5 @@ public interface IA2Repo
     GameRecord AddGameRecord(GameRecord gameRecord);
     GameRecord GetGameRecordById(Guid id);
     GameRecord RemoveGameRecord(GameRecord g);
-    GameRecord UpdateGameRecord(GameRecord g);
+    void UpdateGameRecord();
 }

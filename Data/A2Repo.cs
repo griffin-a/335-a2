@@ -49,10 +49,10 @@ public class A2Repo : IA2Repo
         return g;
     }
 
-    public GameRecord UpdateGameRecord(GameRecord g)
+    public void UpdateGameRecord()
     {
-        _dbContext.GameRecords.Update(g);
+        // _dbContext.GameRecords.Update(g);
         _dbContext.SaveChanges();
-        return g;
+        // return g;
     }
 }

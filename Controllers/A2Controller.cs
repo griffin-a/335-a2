@@ -75,33 +75,29 @@ public class A2Controller : Controller
                Player2 = newGame.Player2, LastMovePlayer1 = newGame.LastMovePlayer1,
                LastMovePlayer2 = newGame.LastMovePlayer2
            };
+
+           return Ok(gameRecordOut);
         }
 
-        else
+        
+        // Check whether or not current user is Player 1 or Player 2
+        if (queuedGame.Player1 != username)
         {
             queuedGame.State = "progress";
-
-            // Check whether or not current user is Player 1 or Player 2
-            if (queuedGame.Player1 != null)
-            {
-                queuedGame.Player2 = username;
-            }
-            else
-            {
-                queuedGame.Player1 = username;
-            }
-            
-            gameRecordOut = new GameRecordOut
-            {
-                GameId = queuedGame.GameId, State = queuedGame.State, Player1 = queuedGame.Player1,
-                Player2 = queuedGame.Player2, LastMovePlayer1 = queuedGame.LastMovePlayer1,
-                LastMovePlayer2 = queuedGame.LastMovePlayer2
-            };
-
-            _repository.UpdateGameRecord(queuedGame);
-
-            // _repository.AddGameRecord(queuedGame);
+            queuedGame.Player2 = username;
         }
+
+        gameRecordOut = new GameRecordOut
+        {
+            GameId = queuedGame.GameId, State = queuedGame.State, Player1 = queuedGame.Player1,
+            Player2 = queuedGame.Player2, LastMovePlayer1 = queuedGame.LastMovePlayer1,
+            LastMovePlayer2 = queuedGame.LastMovePlayer2
+        };
+
+        _repository.UpdateGameRecord();
+
+        // _repository.AddGameRecord(queuedGame);
+    
 
         return Ok(gameRecordOut);
     }
@@ -150,7 +146,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer1 == null)
                 {
                     game.LastMovePlayer2 = null;
-                    _repository.UpdateGameRecord(game);
+                    _repository.UpdateGameRecord();
                     res = "move registered";
                 }
                 else res = "It is not your turn.";
@@ -166,7 +162,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer2 == null)
                 {
                     game.LastMovePlayer1 = null;
-                    _repository.UpdateGameRecord(game);
+                    _repository.UpdateGameRecord();
                     res = "move registered";
                 }
                 else res = "It is not your turn.";
