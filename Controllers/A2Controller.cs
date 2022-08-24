@@ -110,16 +110,26 @@ public class A2Controller : Controller
     {
         // Check if a game exists based on the given id first
         var game = _repository.GetGameRecordById(gameId);
-        string res = "no such gameId";
+        Console.WriteLine(game.GameId);
 
-        if (game == null) return Ok(res);
         // Check if the game is a game that is played by the user (Player 1 matches the current user)
+        // Check if logged in user is player 1 or player 2
         string username = GetCurrentUsername();
-        if (game.Player1 != username) res = "not your game id";
-        else if (game.Player2 == null) res = "You do not have an opponent yet.";
-        else if (game.LastMovePlayer2 == null) res = "Your opponent has not moved yet.";
 
-        return Ok(res);
+        if (username == game.Player1)
+        {
+            if(game.LastMovePlayer2 == null) return Ok("Your opponent has not moved yet.");
+            if(game.LastMovePlayer2 != null) return Ok(game.LastMovePlayer2);
+            if (game.Player2 == null) return Ok("You do not have an opponent yet!");
+        }
+        else if (username == game.Player2)
+        {
+            if(game.LastMovePlayer1 == null) return Ok("Your opponent has not moved yet.");
+            if (game.LastMovePlayer1 != null) return Ok(game.LastMovePlayer1);
+            if (game.Player1 == null) return Ok("You do not have an opponent yet!");
+        }
+
+        return Ok("not your game id");
     }
 
     [HttpPost("MyMove")]
