@@ -10,7 +10,7 @@ public interface IA2Repo
     User GetUserByUsername(string username);
     IEnumerable<GameRecord> GetGameRecords();
     GameRecord AddGameRecord(GameRecord gameRecord);
-    GameRecord GetGameRecordById(Guid id);
+    GameRecord GetGameRecordById(string id);
     GameRecord RemoveGameRecord(GameRecord g);
     void UpdateGameRecord();
 }

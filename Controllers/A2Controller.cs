@@ -49,7 +49,7 @@ public class A2Controller : Controller
         return Ok(order);
     }
 
-    [HttpPost("PairMe")]
+    [HttpGet("PairMe")]
     [Authorize(AuthenticationSchemes = "MyAuthentication")]
     [Authorize(Policy = "UserOnly")]
     public ActionResult<GameRecordOut> StartGame()
@@ -68,7 +68,7 @@ public class A2Controller : Controller
 
         if (queuedGame == null)
         { 
-           GameRecord newGame = new GameRecord { GameId = Guid.NewGuid(), State = "wait", Player1 = username };
+           GameRecord newGame = new GameRecord { Player1 = username };
            _repository.AddGameRecord(newGame);
            gameRecordOut = new GameRecordOut
            {
@@ -106,7 +106,7 @@ public class A2Controller : Controller
     [HttpGet("TheirMove/{gameId}")]
     [Authorize(AuthenticationSchemes = "MyAuthentication")]
     [Authorize(Policy = "UserOnly")]
-    public ActionResult<string> GetOpponentMove(Guid gameId)
+    public ActionResult<string> GetOpponentMove(string gameId)
     {
         // Check if a game exists based on the given id first
         var game = _repository.GetGameRecordById(gameId);
@@ -193,7 +193,7 @@ public class A2Controller : Controller
     [HttpPost("QuitGame/{gameId}")]
     [Authorize(AuthenticationSchemes = "MyAuthentication")]
     [Authorize(Policy = "UserOnly")]
-    public ActionResult<string> QuitGame(Guid gameId)
+    public ActionResult<string> QuitGame(string gameId)
     {
         // Get the game based on the passed in gameId
         var game = _repository.GetGameRecordById(gameId);

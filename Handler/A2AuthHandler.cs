@@ -37,7 +37,10 @@ public class A2AuthHandler : AuthenticationHandler<AuthenticationSchemeOptions>
         var password = credentials[1];
 
         if (!_repository.ValidLogin(username, password))
+        {
+            Response.Headers.Add("WWW-Authenticate", "Basic");
             return AuthenticateResult.Fail("userName and password do not match");
+        }
         var claims = new[] { new Claim("userName", username) };
 
         ClaimsIdentity identity = new ClaimsIdentity(claims, "Basic");
