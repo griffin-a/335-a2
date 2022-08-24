@@ -1,3 +1,4 @@
+using System.Resources;
 using System.Security.Claims;
 using A2.Data;
 using A2.Dtos;
@@ -146,6 +147,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer1 == null)
                 {
                     game.LastMovePlayer2 = null;
+                    game.LastMovePlayer1 = move.Move;
                     _repository.UpdateGameRecord();
                     res = "move registered";
                 }
@@ -162,6 +164,7 @@ public class A2Controller : Controller
                 if (game.LastMovePlayer2 == null)
                 {
                     game.LastMovePlayer1 = null;
+                    game.LastMovePlayer2 = move.Move;
                     _repository.UpdateGameRecord();
                     res = "move registered";
                 }
